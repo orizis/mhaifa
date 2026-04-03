@@ -1,4 +1,3 @@
-
 const SilhouetteSVG = () => (
   <svg width="56" height="56" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
     <circle cx="32" cy="20" r="13" fill="#c8dcc8" />
@@ -7,10 +6,6 @@ const SilhouetteSVG = () => (
 );
 
 export default function PlayerCard({ player, onSelect, selected }) {
-  const fallback = player.position === 'GK'
-    ? <img src="/gk.png" alt="" />
-    : <SilhouetteSVG />;
-
   return (
     <button
       className={`pcard ${selected ? 'pcard--selected' : ''}`}
@@ -27,10 +22,10 @@ export default function PlayerCard({ player, onSelect, selected }) {
                 e.currentTarget.nextSibling.style.display = 'flex';
               }}
             />
-            <span style={{ display: 'none' }} className="pcard__fallback">{fallback}</span>
+            <span style={{ display: 'none' }} className="pcard__fallback"><SilhouetteSVG /></span>
           </>
         ) : (
-          <span className="pcard__fallback">{fallback}</span>
+          <span className="pcard__fallback"><SilhouetteSVG /></span>
         )}
         {selected && <span className="pcard__check">✓</span>}
       </div>

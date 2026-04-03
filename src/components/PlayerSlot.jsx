@@ -111,7 +111,13 @@ export default function PlayerSlot({ position, player, onClick, onRemove }) {
 
         {/* Photo / Jersey */}
         <div className="card__photo">
-          {filled ? <Photo player={player} size={58} /> : <Jersey size={42} />}
+          {filled ? (
+            <Photo player={player} size={58} />
+          ) : position === 'GK' ? (
+            <img src="/gk.png" alt="" width={42} height={42} style={{ objectFit: 'contain' }} />
+          ) : (
+            <Jersey size={42} />
+          )}
         </div>
 
         {/* Name */}
