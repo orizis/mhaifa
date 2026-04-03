@@ -1,4 +1,4 @@
-const IMG = "/mhaifa-img/";
+const IMG = "https://images.api.mhaifafc.com/";
 
 const rawPlayers = [
   // ═══════════════════════════════════════════════
