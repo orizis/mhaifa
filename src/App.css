@@ -376,6 +376,15 @@ img    { display: block; max-width: 100%; }
   background: rgba(0,0,0,.1);
 }
 
+/* Empty slot: real kit photo from public/jersey.png */
+.jersey-thumb {
+  display: block;
+  object-fit: contain;
+  object-position: center;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.25));
+}
+
 /* Card name footer */
 .card__footer {
   padding: 4px 5px 8px;
@@ -447,8 +456,14 @@ img    { display: block; max-width: 100%; }
   background: rgba(0,0,0,.2); flex-shrink: 0;
 }
 .mgrcard--filled .mgrcard__photo { border: 2px solid var(--mh); }
-.mgrcard__photo img,
+.mgrcard__photo img:not(.jersey-thumb),
 .mgrcard__photo .card__img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.mgrcard__photo .jersey-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
 .mgrcard__name { font-size: .85rem; font-weight: 700; white-space: nowrap; }
 .mgrcard--filled .mgrcard__name { color: var(--txt); }
 .mgrcard--empty  .mgrcard__name { color: rgba(255,255,255,.28); font-weight: 500; font-size: .78rem; }
