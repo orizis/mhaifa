@@ -68,7 +68,7 @@ export default function App() {
     try {
       const el = document.getElementById("pitch-export");
       const canvas = await html2canvas(el, {
-        allowTaint: true,
+        useCORS: true,
         scale: 2,
         width: el.offsetWidth,
         height: el.offsetHeight,
@@ -78,29 +78,9 @@ export default function App() {
         logging: false,
       });
 
-      // toDataURL fails on a tainted canvas (cross-origin images).
-      // Pipe through captureStream → video → clean canvas to work around it.
-      let dataUrl;
-      try {
-        dataUrl = canvas.toDataURL("image/png");
-      } catch {
-        const stream = canvas.captureStream(0);
-        const video = document.createElement("video");
-        video.srcObject = stream;
-        video.muted = true;
-        await new Promise((r) => { video.onloadeddata = r; video.play(); });
-        await new Promise((r) => requestAnimationFrame(r));
-        const clean = document.createElement("canvas");
-        clean.width = canvas.width;
-        clean.height = canvas.height;
-        clean.getContext("2d").drawImage(video, 0, 0);
-        stream.getTracks().forEach((t) => t.stop());
-        dataUrl = clean.toDataURL("image/png");
-      }
-
       const link = document.createElement("a");
       link.download = "maccabi-haifa-xi.png";
-      link.href = dataUrl;
+      link.href = canvas.toDataURL("image/png");
       link.click();
     } finally {
       setExporting(false);

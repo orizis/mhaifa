@@ -1,4 +1,4 @@
-const IMG = "https://images.api.mhaifafc.com/";
+const IMG = "/img/";
 
 const rawPlayers = [
   // ═══════════════════════════════════════════════
@@ -755,7 +755,7 @@ export const MANAGERS = [
     id: "barak-bakhar",
     nameHe: "ברק בכר",
     seasons: ["2022/23"],
-    imageUrl: "pics_2021_2022_d4babce0df.png",
+    img: "pics_2021_2022_d4babce0df.png",
     position: "MGR",
   },
 ];
