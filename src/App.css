@@ -271,6 +271,8 @@ img    { display: block; max-width: 100%; }
   height: auto;
   max-height: 100cqh;
   flex-shrink: 0;
+  container-type: inline-size;
+  container-name: surface;
 }
 .pitch-surface .field-svg {
   position: absolute;
@@ -844,7 +846,7 @@ img    { display: block; max-width: 100%; }
 /* ═══════════════════════════════════════════════
    RESPONSIVE PITCH CARDS (container queries)
 ═══════════════════════════════════════════════ */
-@container pitch (max-width: 370px) {
+@container surface (max-width: 370px) {
   .card__img, .card__sil {
     width: 46px;
     height: 46px;
