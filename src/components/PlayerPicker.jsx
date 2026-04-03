@@ -54,7 +54,10 @@ export default function PlayerPicker({ activePicker, lineup, onSelect, onClose }
   const handleManual = () => {
     const name = manualName.trim();
     if (!name) return;
-    onSelect({ id: 'manual-' + Date.now(), nameHe: name, position: role, seasons: ['ידני'], imageUrl: null });
+    const allPlayers = [lineup.GK, lineup.MGR, ...lineup.DEF, ...lineup.MID, ...lineup.ATT].filter(Boolean);
+    const alreadyInLineup = allPlayers.some(p => p.nameHe === name && p.id !== current?.id);
+    if (alreadyInLineup) return;
+    onSelect({ id: 'manual-' + name, nameHe: name, position: role, seasons: ['ידני'], imageUrl: null });
   };
 
   return (
