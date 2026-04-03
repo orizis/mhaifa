@@ -786,7 +786,6 @@ img    { display: block; max-width: 100%; }
 }
 .pcard:hover {
   border-color: var(--mh); background: var(--mh-lt);
-  transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(0,166,81,.18);
 }
 .pcard--selected {
