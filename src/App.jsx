@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import html2canvas from 'html2canvas';
-import Pitch from './components/Pitch.jsx';
-import PlayerPicker from './components/PlayerPicker.jsx';
+import { useState } from "react";
+import html2canvas from "html2canvas";
+import Pitch from "./components/Pitch.jsx";
+import PlayerPicker from "./components/PlayerPicker.jsx";
 
 const EMPTY_LINEUP = {
-  GK:  null,
+  GK: null,
   DEF: [null, null, null, null],
   MID: [null, null, null],
   ATT: [null, null, null],
@@ -33,10 +33,10 @@ export default function App() {
   const handleSlotClick = (role, index) => setActivePicker({ role, index });
 
   const handleSelect = (player) => {
-    setLineup(prev => {
+    setLineup((prev) => {
       const next = { ...prev };
-      if (activePicker.role === 'GK') next.GK = player;
-      else if (activePicker.role === 'MGR') next.MGR = player;
+      if (activePicker.role === "GK") next.GK = player;
+      else if (activePicker.role === "MGR") next.MGR = player;
       else {
         next[activePicker.role] = [...prev[activePicker.role]];
         next[activePicker.role][activePicker.index] = player;
@@ -47,10 +47,10 @@ export default function App() {
   };
 
   const handleRemove = (role, index) => {
-    setLineup(prev => {
+    setLineup((prev) => {
       const next = { ...prev };
-      if (role === 'GK') next.GK = null;
-      else if (role === 'MGR') next.MGR = null;
+      if (role === "GK") next.GK = null;
+      else if (role === "MGR") next.MGR = null;
       else {
         next[role] = [...prev[role]];
         next[role][index] = null;
@@ -60,13 +60,13 @@ export default function App() {
   };
 
   const handleReset = () => {
-    if (window.confirm('לאפס את כל הבחירות?')) setLineup(EMPTY_LINEUP);
+    if (window.confirm("לאפס את כל הבחירות?")) setLineup(EMPTY_LINEUP);
   };
 
   const handleExport = async () => {
     setExporting(true);
     try {
-      const el = document.getElementById('pitch-export');
+      const el = document.getElementById("pitch-export");
       const canvas = await html2canvas(el, {
         useCORS: true,
         allowTaint: true,
@@ -75,12 +75,12 @@ export default function App() {
         height: el.offsetHeight,
         windowWidth: document.documentElement.clientWidth,
         windowHeight: document.documentElement.clientHeight,
-        backgroundColor: '#071209',
+        backgroundColor: "#071209",
         logging: false,
       });
-      const link = document.createElement('a');
-      link.download = 'maccabi-haifa-xi.png';
-      link.href = canvas.toDataURL('image/png');
+      const link = document.createElement("a");
+      link.download = "maccabi-haifa-xi.png";
+      link.href = canvas.toDataURL("image/png");
       link.click();
     } finally {
       setExporting(false);
@@ -124,7 +124,7 @@ export default function App() {
         />
       </main>
 
-      <footer className={`footer ${complete ? 'footer--ready' : ''}`}>
+      <footer className={`footer ${complete ? "footer--ready" : ""}`}>
         <div className="footer__inner">
           <div className="footer__progress">
             <div className="footer__progress-top">
@@ -133,21 +133,33 @@ export default function App() {
                 <span className="footer__count-sep">/</span>
                 <span className="footer__count-max">12</span>
               </span>
-              <span className="footer__label">
-                {complete ? 'הרכב מלא — אפשר לייצא תמונה' : 'לחצו על תא ריק במגרש כדי לבחור'}
-              </span>
             </div>
-            <div className="progress-bar" role="progressbar" aria-valuenow={count} aria-valuemin={0} aria-valuemax={12}>
-              <div className="progress-bar__fill" style={{ width: `${(count / 12) * 100}%` }} />
+            <div
+              className="progress-bar"
+              role="progressbar"
+              aria-valuenow={count}
+              aria-valuemin={0}
+              aria-valuemax={12}
+            >
+              <div
+                className="progress-bar__fill"
+                style={{ width: `${(count / 12) * 100}%` }}
+              />
             </div>
           </div>
           <div className="footer__actions">
-            <button type="button" className="btn btn--ghost" onClick={handleReset}>
+            <button
+              type="button"
+              className="btn btn--ghost"
+              onClick={handleReset}
+            >
               אפס
             </button>
             <button
               type="button"
-              className={`btn btn--export ${complete ? 'btn--export-ready' : ''}`}
+              className={`btn btn--export ${
+                complete ? "btn--export-ready" : ""
+              }`}
               onClick={handleExport}
               disabled={!complete || exporting}
               aria-busy={exporting}
