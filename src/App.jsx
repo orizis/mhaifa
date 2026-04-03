@@ -70,12 +70,15 @@ export default function App() {
       const canvas = await html2canvas(el, {
         useCORS: true,
         scale: 2,
-        width: el.offsetWidth,
-        height: el.offsetHeight,
-        windowWidth: document.documentElement.clientWidth,
-        windowHeight: document.documentElement.clientHeight,
         backgroundColor: "#071209",
         logging: false,
+        onclone: (_doc, el) => {
+          el.querySelectorAll(".card__name").forEach((n) => {
+            n.style.display = "block";
+            n.style.overflow = "visible";
+            n.style.webkitLineClamp = "unset";
+          });
+        },
       });
 
       const link = document.createElement("a");
