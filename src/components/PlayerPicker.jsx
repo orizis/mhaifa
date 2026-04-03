@@ -30,15 +30,26 @@ export default function PlayerPicker({ activePicker, lineup, onSelect, onClose }
   const posLabel = POSITION_LABELS[role] || role;
   const pool     = isMgr ? MANAGERS : PLAYERS.filter(p => p.position === role);
 
-  const filtered = pool.filter(p => {
-    const okSeason = seasonFilter === 'all' || p.seasons.includes(seasonFilter);
-    const okSearch = !search.trim() || p.nameHe.includes(search.trim());
-    return okSeason && okSearch;
-  });
-
   const current = role === 'GK' ? lineup.GK
     : role === 'MGR'  ? lineup.MGR
     : lineup[role]?.[activePicker?.index];
+
+  const selectedIds = new Set([
+    lineup.GK?.id,
+    lineup.MGR?.id,
+    ...lineup.DEF.map(p => p?.id),
+    ...lineup.MID.map(p => p?.id),
+    ...lineup.ATT.map(p => p?.id),
+  ].filter(Boolean));
+  // Allow re-selecting the player already in this slot
+  if (current?.id) selectedIds.delete(current.id);
+
+  const filtered = pool.filter(p => {
+    const okSeason = seasonFilter === 'all' || p.seasons.includes(seasonFilter);
+    const okSearch = !search.trim() || p.nameHe.includes(search.trim());
+    const okAvailable = !selectedIds.has(p.id);
+    return okSeason && okSearch && okAvailable;
+  });
 
   const handleManual = () => {
     const name = manualName.trim();
