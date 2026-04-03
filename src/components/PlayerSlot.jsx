@@ -39,6 +39,7 @@ const Photo = ({ player, size }) => {
         src={player.imageUrl}
         alt={player.nameHe}
         className="card__img"
+        crossOrigin="anonymous"
         onError={(e) => {
           e.currentTarget.style.display = "none";
           e.currentTarget.nextSibling.style.display = "flex";

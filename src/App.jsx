@@ -68,6 +68,7 @@ export default function App() {
     try {
       const el = document.getElementById("pitch-export");
       const canvas = await html2canvas(el, {
+        useCORS: true,
         scale: 2,
         width: el.offsetWidth,
         height: el.offsetHeight,
@@ -75,38 +76,6 @@ export default function App() {
         windowHeight: document.documentElement.clientHeight,
         backgroundColor: "#071209",
         logging: false,
-        onclone: async (clonedDoc) => {
-          // Convert cross-origin images to data-URLs so html2canvas can draw them
-          const imgs = [...clonedDoc.querySelectorAll("img")].filter(
-            (img) =>
-              img.src &&
-              !img.src.startsWith("data:") &&
-              !img.src.startsWith("blob:")
-          );
-          await Promise.allSettled(
-            imgs.map(async (img) => {
-              try {
-                const resp = await fetch(img.src);
-                const blob = await resp.blob();
-                img.src = await new Promise((resolve, reject) => {
-                  const reader = new FileReader();
-                  reader.onload = () => resolve(reader.result);
-                  reader.onerror = reject;
-                  reader.readAsDataURL(blob);
-                });
-              } catch {
-                // leave image as-is if fetch fails
-              }
-            })
-          );
-          // html2canvas mis-renders -webkit-line-clamp as blank dashes — flatten it
-          clonedDoc.querySelectorAll(".card__name").forEach((nameEl) => {
-            nameEl.style.display = "block";
-            nameEl.style.webkitLineClamp = "unset";
-            nameEl.style.webkitBoxOrient = "unset";
-            nameEl.style.overflow = "visible";
-          });
-        },
       });
       const link = document.createElement("a");
       link.download = "maccabi-haifa-xi.png";
