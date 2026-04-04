@@ -870,3 +870,64 @@ img    { display: block; max-width: 100%; }
   .row { gap: 4px; }
   .cardslot { flex-basis: calc((100% - 12px) / 4); }
 }
+
+/* ═══════════════════════════════════════════════
+   EXPORT PREVIEW
+═══════════════════════════════════════════════ */
+.export-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.export-preview {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 420px;
+  width: 100%;
+}
+
+.export-preview__close {
+  position: absolute;
+  top: -14px;
+  left: -14px;
+  z-index: 1;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: var(--g600);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.export-preview__img {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+}
+
+.export-preview__actions {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.export-preview__actions .btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useScreenshot } from 'use-react-screenshot';
 import Pitch from './components/Pitch';
 import PlayerPicker from './components/PlayerPicker';
+import ExportPreview from './components/ExportPreview';
 import type { Lineup, ActivePicker, Player, Position } from './types';
 
 const EMPTY_LINEUP: Lineup = {
@@ -26,31 +27,12 @@ function isComplete(lineup: Lineup): boolean {
   return filledCount(lineup) === 12;
 }
 
-async function shareOrDownload(dataUrl: string) {
-  const filename = 'maccabi-haifa-xi.png';
-
-  // Web Share API with file support — on iOS this opens the share sheet
-  // where the user can save directly to the Photos library.
-  if (typeof navigator.canShare === 'function') {
-    const blob = await (await fetch(dataUrl)).blob();
-    const file = new File([blob], filename, { type: 'image/png' });
-    if (navigator.canShare({ files: [file] })) {
-      await navigator.share({ files: [file] });
-      return;
-    }
-  }
-
-  // Fallback: trigger a regular file download (desktop browsers)
-  const link = document.createElement('a');
-  link.download = filename;
-  link.href = dataUrl;
-  link.click();
-}
 
 export default function App() {
   const [lineup, setLineup] = useState<Lineup>(EMPTY_LINEUP);
   const [activePicker, setActivePicker] = useState<ActivePicker | null>(null);
   const [exporting, setExporting] = useState(false);
+  const [exportUrl, setExportUrl] = useState<string | null>(null);
   const [, takeScreenShot] = useScreenshot({ type: 'image/png' });
 
   const handleSlotClick = (role: Position, index: number) => setActivePicker({ role, index });
@@ -111,7 +93,7 @@ export default function App() {
         },
       });
 
-      await shareOrDownload(dataUrl);
+      setExportUrl(dataUrl);
     } finally {
       setExporting(false);
     }
@@ -198,6 +180,8 @@ export default function App() {
         onSelect={handleSelect}
         onClose={() => setActivePicker(null)}
       />
+
+      <ExportPreview dataUrl={exportUrl} onClose={() => setExportUrl(null)} />
     </div>
   );
 }
