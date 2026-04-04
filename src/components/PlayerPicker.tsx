@@ -3,7 +3,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Search } from 'lucide-react';
 import { PLAYERS, MANAGERS, SEASONS, POSITION_LABELS, SEASON_LABELS } from '../data/players';
 import PlayerCard from './PlayerCard';
-import type { Player, Lineup, ActivePicker } from '../types';
+import type { Player, Lineup, ActivePicker, Season } from '../types';
+
+const SEASON_ICON: Record<Season, React.ReactNode> = {
+  '1990/91': <img src="/dices.png"           alt="דאבל"              className="stab__img stab__img--dices" />,
+  '1993/94': <img src="/champions.png"       alt="אליפות בלי הפסדים" className="stab__img" />,
+  '2002/03': <img src="/champions-league.png" alt="צ׳מפיונס ליג"    className="stab__img" />,
+  '2009/10': <img src="/champions-league.png" alt="צ׳מפיונס ליג"    className="stab__img" />,
+  '2022/23': <img src="/champions-league.png" alt="צ׳מפיונס ליג"    className="stab__img" />,
+};
 
 interface Props {
   activePicker: ActivePicker | null;
@@ -130,16 +138,23 @@ export default function PlayerPicker({ activePicker, lineup, onSelect, onClose }
             </div>
 
             <div className="picker__seasons">
-              {(['all', ...SEASONS] as const).map((s) => (
-                <button
-                  key={s}
-                  className={`stab ${seasonFilter === s ? 'stab--active' : ''}`}
-                  onClick={() => setSeasonFilter(s)}
-                  title={s !== 'all' ? SEASON_LABELS[s] : undefined}
-                >
-                  {s === 'all' ? 'הכל' : s}
-                </button>
-              ))}
+              {(['all', ...SEASONS] as const).map((s) => {
+                const isActive = seasonFilter === s;
+                return (
+                  <button
+                    key={s}
+                    className={`stab ${isActive ? 'stab--active' : ''}`}
+                    onClick={() => setSeasonFilter(s)}
+                    title={s !== 'all' ? SEASON_LABELS[s] : undefined}
+                  >
+                    {s === 'all'
+                      ? 'הכל'
+                      : isActive
+                        ? SEASON_ICON[s]
+                        : s}
+                  </button>
+                );
+              })}
             </div>
 
             {!isMgr && (

@@ -297,6 +297,54 @@ img    { display: block; max-width: 100%; }
   margin-top: 0.45em;
 }
 
+.rules-card__divider {
+  margin: 18px 0 14px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.rules-card__section-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+  margin-bottom: 10px;
+}
+
+.rules-card__teams {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rules-card__team-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.rules-card__season-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--mh);
+  background: rgba(0, 230, 118, 0.1);
+  border: 1px solid rgba(0, 230, 118, 0.2);
+  border-radius: 6px;
+  padding: 3px 8px;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+
+.rules-card__achievement {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+  text-align: left;
+}
+
 /* ═══════════════════════════════════════════════
    MAIN
 ═══════════════════════════════════════════════ */
@@ -835,6 +883,18 @@ img    { display: block; max-width: 100%; }
   color: var(--white);
   border-color: var(--mh-mid);
   box-shadow: 0 4px 14px rgba(0, 200, 83, 0.35);
+}
+.stab__img {
+  display: block;
+  height: 22px;
+  width: auto;
+  object-fit: contain;
+}
+.stab__img--dices {
+  /* crop the gray floor shadow rendered at the bottom of the PNG */
+  clip-path: inset(0 0 30% 0);
+  height: 30px;        /* compensate so the dice appear the same visual size after clipping */
+  margin-bottom: -8px; /* pull back the extra whitespace left by the clip */
 }
 
 /* Search */
