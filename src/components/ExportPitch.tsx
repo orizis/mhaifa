@@ -53,27 +53,16 @@ const ExportSilhouette = () => (
 /* ── Single player circle ────────────────────────────────────── */
 function ExportSlot({ player }: { player: Player | null; position: Position }) {
 
-  const handleImgError = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    e.currentTarget.style.display = 'none';
-    const sil = e.currentTarget.nextElementSibling as HTMLElement | null;
-    if (sil) sil.style.display = 'flex';
-  };
-
   return (
     <div className="exp-slot">
       <div className="exp-circle">
         {player?.imageUrl ? (
-          <>
-            <img
-              src={player.imageUrl}
-              alt={player.nameHe}
-              crossOrigin="anonymous"
-              onError={handleImgError}
-            />
-            <span style={{ display: 'none', width: '100%', height: '100%' }}>
-              <ExportSilhouette />
-            </span>
-          </>
+          // background-image + background-size:cover is used instead of <img object-fit>
+          // because html2canvas does not support object-fit and stretches <img> elements.
+          <div
+            className="exp-photo"
+            style={{ backgroundImage: `url(${player.imageUrl})` }}
+          />
         ) : (
           <ExportSilhouette />
         )}
