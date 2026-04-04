@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import html2canvas from 'html2canvas';
+import { useScreenshot } from 'use-react-screenshot';
 import Pitch from './components/Pitch';
 import PlayerPicker from './components/PlayerPicker';
 import type { Lineup, ActivePicker, Player, Position } from './types';
@@ -26,10 +26,32 @@ function isComplete(lineup: Lineup): boolean {
   return filledCount(lineup) === 12;
 }
 
+async function shareOrDownload(dataUrl: string) {
+  const filename = 'maccabi-haifa-xi.png';
+
+  // Web Share API with file support — on iOS this opens the share sheet
+  // where the user can save directly to the Photos library.
+  if (typeof navigator.canShare === 'function') {
+    const blob = await (await fetch(dataUrl)).blob();
+    const file = new File([blob], filename, { type: 'image/png' });
+    if (navigator.canShare({ files: [file] })) {
+      await navigator.share({ files: [file] });
+      return;
+    }
+  }
+
+  // Fallback: trigger a regular file download (desktop browsers)
+  const link = document.createElement('a');
+  link.download = filename;
+  link.href = dataUrl;
+  link.click();
+}
+
 export default function App() {
   const [lineup, setLineup] = useState<Lineup>(EMPTY_LINEUP);
   const [activePicker, setActivePicker] = useState<ActivePicker | null>(null);
   const [exporting, setExporting] = useState(false);
+  const [, takeScreenShot] = useScreenshot({ type: 'image/png' });
 
   const handleSlotClick = (role: Position, index: number) => setActivePicker({ role, index });
 
@@ -76,12 +98,12 @@ export default function App() {
     if (!el) return;
     setExporting(true);
     try {
-      const canvas = await html2canvas(el, {
+      const dataUrl = await takeScreenShot(el, {
         useCORS: true,
         scale: 2,
         backgroundColor: '#071209',
         logging: false,
-        onclone: (_doc, cloned) => {
+        onclone: (_doc: Document, cloned: HTMLElement) => {
           cloned.querySelectorAll<HTMLElement>('.card__name').forEach((n) => {
             n.style.overflow = 'visible';
             n.style.webkitLineClamp = 'unset';
@@ -89,10 +111,7 @@ export default function App() {
         },
       });
 
-      const link = document.createElement('a');
-      link.download = 'maccabi-haifa-xi.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
+      await shareOrDownload(dataUrl);
     } finally {
       setExporting(false);
     }
