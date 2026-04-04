@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useScreenshot } from 'use-react-screenshot';
 import { Shuffle } from 'lucide-react';
+import { trackEvent, trackLineupExported } from './analytics';
 import Pitch from './components/Pitch';
 import PlayerPicker from './components/PlayerPicker';
 import ExportPreview from './components/ExportPreview';
@@ -61,7 +62,10 @@ export default function App() {
   };
 
   const handleReset = () => {
-    if (window.confirm('לאפס את כל הבחירות?')) setLineup(EMPTY_LINEUP);
+    if (window.confirm('לאפס את כל הבחירות?')) {
+      setLineup(EMPTY_LINEUP);
+      trackEvent('lineup_reset');
+    }
   };
 
   const handleRandom = () => {
@@ -75,6 +79,7 @@ export default function App() {
       ATT: pick(PLAYERS.filter(p => p.position === 'ATT'), 3),
       MGR: pick(MANAGERS, 1)[0] ?? null,
     });
+    trackEvent('random_lineup_used');
   };
 
   const handleExport = async () => {
@@ -90,6 +95,13 @@ export default function App() {
       });
 
       setExportUrl(dataUrl);
+      trackLineupExported({
+        gk:  lineup.GK?.nameHe ?? null,
+        def: lineup.DEF.map(p => p?.nameHe ?? null),
+        mid: lineup.MID.map(p => p?.nameHe ?? null),
+        att: lineup.ATT.map(p => p?.nameHe ?? null),
+        mgr: lineup.MGR?.nameHe ?? null,
+      });
     } finally {
       setExporting(false);
     }

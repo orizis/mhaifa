@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Share, Download } from 'lucide-react';
+import { trackEvent } from '../analytics';
 
 interface Props {
   dataUrl: string | null;
@@ -28,6 +29,7 @@ const canShareFiles = (() => {
 export default function ExportPreview({ dataUrl, onClose }: Props) {
   const handleShare = () => {
     if (!dataUrl) return;
+    trackEvent('lineup_shared');
     const file = new File([dataUrlToBlob(dataUrl)], 'maccabi-haifa-xi.png', { type: 'image/png' });
     // Called directly from a button click → fresh user gesture → works on iOS
     navigator.share({ files: [file] }).catch(() => {/* user cancelled */});
@@ -35,6 +37,7 @@ export default function ExportPreview({ dataUrl, onClose }: Props) {
 
   const handleDownload = () => {
     if (!dataUrl) return;
+    trackEvent('lineup_downloaded');
     const link = document.createElement('a');
     link.download = 'maccabi-haifa-xi.png';
     link.href = dataUrl;

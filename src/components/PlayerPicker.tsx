@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Search } from 'lucide-react';
+import { trackEvent } from '../analytics';
 import { PLAYERS, MANAGERS, SEASONS, POSITION_LABELS, SEASON_LABELS } from '../data/players';
 import PlayerCard from './PlayerCard';
 import type { Player, Lineup, ActivePicker, Season } from '../types';
@@ -87,6 +88,7 @@ export default function PlayerPicker({ activePicker, lineup, onSelect, onClose }
     if (!name || hasOtherManual) return;
     const alreadyInLineup = allInLineup.some((p) => p.nameHe === name && p.id !== current?.id);
     if (alreadyInLineup) return;
+    trackEvent('manual_player_added', { player_name: name, position: role ?? 'MID' });
     onSelect({
       id: `manual-${++manualCounter}-${name}`,
       nameHe: name,
@@ -94,6 +96,15 @@ export default function PlayerPicker({ activePicker, lineup, onSelect, onClose }
       seasons: ['ידני'],
       imageUrl: null,
     });
+  };
+
+  const handlePlayerSelect = (player: Player) => {
+    trackEvent('player_selected', {
+      player_name: player.nameHe,
+      position: role ?? 'unknown',
+      is_manual: player.id.startsWith('manual-'),
+    });
+    onSelect(player);
   };
 
   return (
@@ -144,7 +155,7 @@ export default function PlayerPicker({ activePicker, lineup, onSelect, onClose }
                   <button
                     key={s}
                     className={`stab ${isActive ? 'stab--active' : ''}`}
-                    onClick={() => setSeasonFilter(s)}
+                    onClick={() => { setSeasonFilter(s); if (s !== 'all') trackEvent('season_filter_used', { season: s }); }}
                     title={s !== 'all' ? SEASON_LABELS[s] : undefined}
                   >
                     {s === 'all'
@@ -188,7 +199,7 @@ export default function PlayerPicker({ activePicker, lineup, onSelect, onClose }
                     key={p.id}
                     player={p}
                     selected={current?.id === p.id}
-                    onSelect={onSelect}
+                    onSelect={handlePlayerSelect}
                   />
                 ))
               )}
