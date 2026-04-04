@@ -352,6 +352,7 @@ img    { display: block; max-width: 100%; }
 
 .card__season {
   font-size: .44rem; font-weight: 700;
+  width: 100%; text-align: center;
 }
 .card--filled .card__season { color: rgba(255,255,255,.62); }
 
@@ -917,6 +918,9 @@ img    { display: block; max-width: 100%; }
 
 .export-preview__img {
   width: 100%;
+  /* Leave room for the button + padding so it's always visible without scrolling */
+  max-height: calc(100svh - 140px);
+  object-fit: contain;
   border-radius: 10px;
   box-shadow: 0 8px 40px rgba(0,0,0,0.6);
 }
