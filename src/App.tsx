@@ -87,9 +87,26 @@ export default function App() {
     if (!el) return;
     setExporting(true);
     try {
+      // Preload all player images so html2canvas captures them at full resolution
+      const imageUrls = [
+        lineup.GK?.imageUrl,
+        lineup.MGR?.imageUrl,
+        ...lineup.DEF.map(p => p?.imageUrl),
+        ...lineup.MID.map(p => p?.imageUrl),
+        ...lineup.ATT.map(p => p?.imageUrl),
+      ].filter((url): url is string => !!url);
+
+      await Promise.all(imageUrls.map(url => new Promise<void>((resolve) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => resolve();
+        img.onerror = () => resolve();
+        img.src = url;
+      })));
+
       const dataUrl = await takeScreenShot(el, {
         useCORS: true,
-        scale: 2,
+        scale: 3,
         backgroundColor: '#071209',
         logging: false,
       });
