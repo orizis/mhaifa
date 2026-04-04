@@ -70,9 +70,8 @@ export default function PlayerSlot({ position, player, onClick, onRemove }: Prop
       <div className="mgrslot">
         <motion.button
           className={`mgrcard ${filled ? 'mgrcard--filled' : 'mgrcard--empty'}`}
-          onClick={onClick}
-          whileHover={{ scale: 1.04 }}
-          whileTap={{ scale: 0.96 }}
+          onClick={filled ? undefined : onClick}
+          {...(!filled && { whileHover: { scale: 1.04 }, whileTap: { scale: 0.96 } })}
         >
           <div className="mgrcard__photo">
             {filled ? (
@@ -102,10 +101,12 @@ export default function PlayerSlot({ position, player, onClick, onRemove }: Prop
     <div className="cardslot">
       <motion.button
         className={`card ${filled ? 'card--filled' : 'card--empty'}`}
-        onClick={onClick}
-        whileHover={{ y: -6, scale: 1.06, zIndex: 10 }}
-        whileTap={{ scale: 0.94 }}
-        transition={{ type: 'spring', stiffness: 380, damping: 24 }}
+        onClick={filled ? undefined : onClick}
+        {...(!filled && {
+          whileHover: { y: -6, scale: 1.06, zIndex: 10 },
+          whileTap: { scale: 0.94 },
+          transition: { type: 'spring', stiffness: 380, damping: 24 },
+        })}
       >
         <div className="card__head">
           <span className="card__pos">{label}</span>
