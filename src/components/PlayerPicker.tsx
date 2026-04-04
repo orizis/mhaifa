@@ -96,7 +96,7 @@ export default function PlayerPicker({ activePicker, lineup, onSelect, onClose }
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.18 }}
+          transition={{ duration: 0.25 }}
           onClick={onClose}
         >
           <motion.div
@@ -104,7 +104,7 @@ export default function PlayerPicker({ activePicker, lineup, onSelect, onClose }
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
-            transition={{ type: 'spring', stiffness: 380, damping: 38 }}
+            transition={{ type: 'tween', duration: 0.38, ease: [0.32, 0.72, 0, 1] }}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="picker__handle" />

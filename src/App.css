@@ -420,7 +420,9 @@ img    { display: block; max-width: 100%; }
   z-index: 20; opacity: 0; transform: scale(.65);
   transition: opacity .15s, transform .2s;
 }
-.cardslot:hover .cardslot__remove { opacity: 1; transform: scale(1); }
+@media (hover: hover) {
+  .cardslot:hover .cardslot__remove { opacity: 1; transform: scale(1); }
+}
 
 /* ═══════════════════════════════════════════════
    MANAGER BAR
@@ -482,7 +484,9 @@ img    { display: block; max-width: 100%; }
   z-index: 20; opacity: 0; transform: scale(.65);
   transition: opacity .15s, transform .2s;
 }
-.mgrslot:hover .mgrslot__remove { opacity: 1; transform: scale(1); }
+@media (hover: hover) {
+  .mgrslot:hover .mgrslot__remove { opacity: 1; transform: scale(1); }
+}
 
 /* ═══════════════════════════════════════════════
    FOOTER
