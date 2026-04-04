@@ -203,6 +203,100 @@ img    { display: block; max-width: 100%; }
     0 4px 14px rgba(0, 200, 83, 0.35);
 }
 
+.header__rules-btn {
+  margin-right: auto;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 5px 11px;
+  white-space: nowrap;
+  transition: border-color 0.15s, color 0.15s;
+}
+@media (hover: hover) {
+  .header__rules-btn:hover {
+    border-color: var(--mh);
+    color: var(--mh);
+  }
+}
+
+/* ── House rules modal ──────────────────────── */
+.rules-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.rules-card {
+  width: 100%;
+  max-width: 340px;
+  background: #0d1f12;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 22px 22px 24px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+
+.rules-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.rules-card__title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--mh);
+  letter-spacing: 0.01em;
+}
+
+.rules-card__close {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rules-card__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.rules-card__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.45;
+}
+
+.rules-card__dot {
+  flex-shrink: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--mh);
+  margin-top: 0.45em;
+}
+
 /* ═══════════════════════════════════════════════
    MAIN
 ═══════════════════════════════════════════════ */

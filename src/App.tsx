@@ -5,6 +5,7 @@ import Pitch from './components/Pitch';
 import PlayerPicker from './components/PlayerPicker';
 import ExportPreview from './components/ExportPreview';
 import ExportPitch from './components/ExportPitch';
+import HouseRules from './components/HouseRules';
 import { PLAYERS, MANAGERS } from './data/players';
 import type { Lineup, ActivePicker, Player, Position } from './types';
 
@@ -36,6 +37,7 @@ export default function App() {
   const [activePicker, setActivePicker] = useState<ActivePicker | null>(null);
   const [exporting, setExporting] = useState(false);
   const [exportUrl, setExportUrl] = useState<string | null>(null);
+  const [showRules, setShowRules] = useState(false);
   const [, takeScreenShot] = useScreenshot({ type: 'image/png' });
 
   const handleSlotClick = (role: Position, index: number) => setActivePicker({ role, index });
@@ -133,6 +135,12 @@ export default function App() {
               <span className="header__chip" title="מערך">4-3-3</span>
             </div>
           </div>
+          <button
+            className="header__rules-btn"
+            onClick={() => setShowRules(true)}
+          >
+            חוקי הבית
+          </button>
         </div>
       </header>
 
@@ -195,6 +203,7 @@ export default function App() {
       />
 
       <ExportPreview dataUrl={exportUrl} onClose={() => setExportUrl(null)} />
+      <HouseRules open={showRules} onClose={() => setShowRules(false)} />
 
       {/* Hidden export target — captured by html2canvas on export */}
       <div

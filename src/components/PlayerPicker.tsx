@@ -93,18 +93,26 @@ export default function PlayerPicker({ activePicker, lineup, onSelect, onClose }
       {activePicker && (
         <motion.div
           className="picker-backdrop"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.25 }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { duration: 0.35, ease: 'easeOut' } },
+            exit:    { opacity: 0, transition: { duration: 0.22, ease: 'easeIn' } },
+          }}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
           onClick={onClose}
         >
           <motion.div
             className="picker"
-            initial={{ y: '100%' }}
-            animate={{ y: 0 }}
-            exit={{ y: '100%' }}
-            transition={{ type: 'tween', duration: 0.38, ease: [0.32, 0.72, 0, 1] }}
+            variants={{
+              hidden:  { y: '100%' },
+              visible: { y: 0,      transition: { type: 'tween', duration: 0.52, ease: [0.22, 1, 0.36, 1] } },
+              exit:    { y: '100%', transition: { type: 'tween', duration: 0.28, ease: [0.36, 0, 0.66, 0] } },
+            }}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="picker__handle" />
