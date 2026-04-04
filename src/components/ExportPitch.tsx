@@ -1,5 +1,4 @@
 import type { Lineup, Player, Position } from '../types';
-import { POSITION_LABELS } from '../data/players';
 
 /* ── Field SVG (same constants as Pitch.tsx) ─────────────────── */
 const W = 68, L = 105, MID_Y = L / 2;
@@ -52,8 +51,7 @@ const ExportSilhouette = () => (
 );
 
 /* ── Single player circle ────────────────────────────────────── */
-function ExportSlot({ player, position }: { player: Player | null; position: Position }) {
-  const label = POSITION_LABELS[position] ?? position;
+function ExportSlot({ player }: { player: Player | null; position: Position }) {
 
   const handleImgError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     e.currentTarget.style.display = 'none';
@@ -80,7 +78,6 @@ function ExportSlot({ player, position }: { player: Player | null; position: Pos
           <ExportSilhouette />
         )}
       </div>
-      <span className="exp-pos">{label}</span>
       {player && (
         <>
           <span className="exp-name">{player.nameHe}</span>

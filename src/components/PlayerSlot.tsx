@@ -109,7 +109,7 @@ export default function PlayerSlot({ position, player, onClick, onRemove }: Prop
         })}
       >
         <div className="card__head">
-          <span className="card__pos">{label}</span>
+          {!filled && <span className="card__pos">{label}</span>}
           {filled && player.seasons[0] && (
             <span className="card__season">{player.seasons[0]}</span>
           )}
