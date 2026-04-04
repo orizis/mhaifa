@@ -47,7 +47,10 @@ export default function PlayerPicker({ activePicker, lineup, onSelect, onClose }
   const role = activePicker?.role;
   const isMgr = role === 'MGR';
   const posLabel = role ? (POSITION_LABELS[role] ?? role) : '';
-  const pool = isMgr ? MANAGERS : PLAYERS.filter((p) => p.position === role);
+  const midAttRoles = new Set<string>(['MID', 'ATT']);
+  const pool = isMgr
+    ? MANAGERS
+    : PLAYERS.filter((p) => midAttRoles.has(role ?? '') ? midAttRoles.has(p.position) : p.position === role);
 
   const current =
     role === 'GK' ? lineup.GK
