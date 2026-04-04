@@ -203,6 +203,148 @@ img    { display: block; max-width: 100%; }
     0 4px 14px rgba(0, 200, 83, 0.35);
 }
 
+.header__rules-btn {
+  margin-right: auto;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 5px 11px;
+  white-space: nowrap;
+  transition: border-color 0.15s, color 0.15s;
+}
+@media (hover: hover) {
+  .header__rules-btn:hover {
+    border-color: var(--mh);
+    color: var(--mh);
+  }
+}
+
+/* ── House rules modal ──────────────────────── */
+.rules-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.rules-card {
+  width: 100%;
+  max-width: 340px;
+  background: #0d1f12;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 22px 22px 24px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+
+.rules-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.rules-card__title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--mh);
+  letter-spacing: 0.01em;
+}
+
+.rules-card__close {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rules-card__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.rules-card__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.45;
+}
+
+.rules-card__dot {
+  flex-shrink: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--mh);
+  margin-top: 0.45em;
+}
+
+.rules-card__divider {
+  margin: 18px 0 14px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.rules-card__section-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+  margin-bottom: 10px;
+}
+
+.rules-card__teams {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rules-card__team-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.rules-card__season-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--mh);
+  background: rgba(0, 230, 118, 0.1);
+  border: 1px solid rgba(0, 230, 118, 0.2);
+  border-radius: 6px;
+  padding: 3px 8px;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+
+.rules-card__achievement {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+  text-align: left;
+}
+
 /* ═══════════════════════════════════════════════
    MAIN
 ═══════════════════════════════════════════════ */
@@ -271,6 +413,8 @@ img    { display: block; max-width: 100%; }
   height: auto;
   max-height: 100cqh;
   flex-shrink: 0;
+  container-type: inline-size;
+  container-name: surface;
 }
 .pitch-surface .field-svg {
   position: absolute;
@@ -294,12 +438,14 @@ img    { display: block; max-width: 100%; }
   justify-content: space-evenly;
   padding: 8px 3px;
 }
-.row { display: flex; justify-content: center; gap: 6px; }
+.row { display: flex; justify-content: center; gap: 6px; width: 100%; }
 
 /* ═══════════════════════════════════════════════
    PLAYER CARD SLOT (on pitch)
 ═══════════════════════════════════════════════ */
-.cardslot { position: relative; width: 88px; flex-shrink: 0; }
+/* All cards use the same width: (row_width − 3 gaps) / 4.
+   Rows with fewer cards simply center the remaining space. */
+.cardslot { position: relative; flex: 0 0 calc((100% - 18px) / 4); max-width: 88px; }
 
 .card {
   width: 100%; display: flex; flex-direction: column;
@@ -348,6 +494,7 @@ img    { display: block; max-width: 100%; }
 
 .card__season {
   font-size: .44rem; font-weight: 700;
+  width: 100%; text-align: center;
 }
 .card--filled .card__season { color: rgba(255,255,255,.62); }
 
@@ -405,17 +552,6 @@ img    { display: block; max-width: 100%; }
   display: flex; align-items: center; gap: 3px;
 }
 
-/* Remove button */
-.cardslot__remove {
-  position: absolute; top: -5px; left: -5px;
-  width: 20px; height: 20px; border-radius: 50%;
-  background: #d92020; color: var(--white);
-  border: 2px solid rgba(255,255,255,.85);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 20; opacity: 0; transform: scale(.65);
-  transition: opacity .15s, transform .2s;
-}
-.cardslot:hover .cardslot__remove { opacity: 1; transform: scale(1); }
 
 /* ═══════════════════════════════════════════════
    MANAGER BAR
@@ -468,16 +604,6 @@ img    { display: block; max-width: 100%; }
 .mgrcard--filled .mgrcard__name { color: var(--txt); }
 .mgrcard--empty  .mgrcard__name { color: rgba(255,255,255,.28); font-weight: 500; font-size: .78rem; }
 
-.mgrslot__remove {
-  position: absolute; top: -4px; right: -4px;
-  width: 18px; height: 18px; border-radius: 50%;
-  background: #d92020; color: var(--white);
-  border: 1.5px solid rgba(255,255,255,.75);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 20; opacity: 0; transform: scale(.65);
-  transition: opacity .15s, transform .2s;
-}
-.mgrslot:hover .mgrslot__remove { opacity: 1; transform: scale(1); }
 
 /* ═══════════════════════════════════════════════
    FOOTER
@@ -733,6 +859,18 @@ img    { display: block; max-width: 100%; }
   border-color: var(--mh-mid);
   box-shadow: 0 4px 14px rgba(0, 200, 83, 0.35);
 }
+.stab__img {
+  display: block;
+  height: 22px;
+  width: auto;
+  object-fit: contain;
+}
+.stab__img--dices {
+  /* crop the gray floor shadow rendered at the bottom of the PNG */
+  clip-path: inset(0 0 30% 0);
+  height: 30px;        /* compensate so the dice appear the same visual size after clipping */
+  margin-bottom: -8px; /* pull back the extra whitespace left by the clip */
+}
 
 /* Search */
 .picker__search {
@@ -783,10 +921,11 @@ img    { display: block; max-width: 100%; }
   padding: 14px 8px 10px; gap: 7px; transition: all .16s; text-align: center;
   box-shadow: 0 2px 8px rgba(0,0,0,.06);
 }
-.pcard:hover {
-  border-color: var(--mh); background: var(--mh-lt);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0,166,81,.18);
+@media (hover: hover) {
+  .pcard:hover {
+    border-color: var(--mh); background: var(--mh-lt);
+    box-shadow: 0 8px 20px rgba(0,166,81,.18);
+  }
 }
 .pcard--selected {
   border-color: var(--mh); background: var(--mh-lt);
@@ -840,3 +979,198 @@ img    { display: block; max-width: 100%; }
 }
 .picker__manual-btn:hover:not(:disabled) { background: var(--mh-dk); }
 .picker__manual-btn:disabled { opacity: .4; cursor: not-allowed; }
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE PITCH CARDS (container queries)
+═══════════════════════════════════════════════ */
+@container surface (max-width: 370px) {
+  .card__img, .card__sil {
+    width: 46px;
+    height: 46px;
+  }
+  .card__photo {
+    padding: 5px 4px 3px;
+  }
+  .card__footer {
+    min-height: 22px;
+    padding: 3px 4px 5px;
+  }
+  .card__name {
+    font-size: .56rem;
+    max-width: 100%;
+  }
+  .card__pos { font-size: .48rem; }
+  .card__head { min-height: 18px; padding: 3px 5px 2px; }
+  .row { gap: 4px; }
+  .cardslot { flex-basis: calc((100% - 12px) / 4); }
+}
+
+/* ═══════════════════════════════════════════════
+   EXPORT PREVIEW
+═══════════════════════════════════════════════ */
+.export-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.82);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.export-preview {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 420px;
+  width: 100%;
+  margin: auto;
+}
+
+.export-preview__close {
+  position: absolute;
+  top: -14px;
+  left: -14px;
+  z-index: 1;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: var(--g600);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.export-preview__img {
+  width: 100%;
+  /* Leave room for the button + padding so it's always visible without scrolling */
+  max-height: calc(100svh - 140px);
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+}
+
+.export-preview__actions {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.export-preview__actions .btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* ═══════════════════════════════════════════════
+   EXPORT PITCH (circle layout, off-screen)
+═══════════════════════════════════════════════ */
+.exp-wrap {
+  background: #071209;
+  width: 390px;
+  font-family: 'Heebo', Arial, sans-serif;
+  direction: rtl;
+}
+
+.exp-pitch {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 68 / 105;
+}
+
+.exp-field-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.exp-formation {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 12px 8px;
+}
+
+.exp-row {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+/* ── Circle slot ── */
+.exp-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  width: 80px;
+}
+
+.exp-circle {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--mh);
+  background: rgba(255,255,255,0.08);
+  flex-shrink: 0;
+}
+
+.exp-photo {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat;
+}
+
+.exp-pos {
+  font-size: 7px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.exp-name {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.exp-season {
+  font-size: 7.5px;
+  font-weight: 500;
+  color: var(--mh);
+}
+
+/* ── Manager bar ── */
+.exp-mgr-bar {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 14px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.exp-mgr-bar .exp-circle {
+  width: 46px;
+  height: 46px;
+  border-color: var(--g400);
+}
