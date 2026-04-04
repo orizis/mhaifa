@@ -60,22 +60,6 @@ export default function App() {
     setActivePicker(null);
   };
 
-  const handleRemove = (role: Position, index: number) => {
-    setLineup((prev) => {
-      const next = { ...prev };
-      if (role === 'GK') {
-        next.GK = null;
-      } else if (role === 'MGR') {
-        next.MGR = null;
-      } else {
-        const arr = [...prev[role as 'DEF' | 'MID' | 'ATT']] as (Player | null)[];
-        arr[index] = null;
-        next[role as 'DEF' | 'MID' | 'ATT'] = arr;
-      }
-      return next;
-    });
-  };
-
   const handleReset = () => {
     if (window.confirm('לאפס את כל הבחירות?')) setLineup(EMPTY_LINEUP);
   };
@@ -148,7 +132,6 @@ export default function App() {
         <Pitch
           lineup={lineup}
           onSlotClick={handleSlotClick}
-          onSlotRemove={handleRemove}
         />
       </main>
 

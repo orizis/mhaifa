@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Plus, X } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import type { Player, Position } from '../types';
 import { POSITION_LABELS } from '../data/players';
 
@@ -18,13 +18,7 @@ function Jersey({ size = 42 }: { size?: number }) {
 }
 
 const Silhouette = ({ size = 58 }: { size?: number }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 64 64"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width={size} height={size} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
     <circle cx="32" cy="20" r="13" fill="rgba(255,255,255,0.18)" />
     <ellipse cx="32" cy="50" rx="19" ry="15" fill="rgba(255,255,255,0.18)" />
   </svg>
@@ -40,12 +34,7 @@ function Photo({ player, size }: { player: Player; size: number }) {
   if (!player.imageUrl) return <Silhouette size={size} />;
   return (
     <>
-      <img
-        src={player.imageUrl}
-        alt={player.nameHe}
-        className="card__img"
-        onError={handleImgError}
-      />
+      <img src={player.imageUrl} alt={player.nameHe} className="card__img" onError={handleImgError} />
       <span className="card__sil" style={{ display: 'none' }}>
         <Silhouette size={size} />
       </span>
@@ -57,10 +46,9 @@ interface Props {
   position: Position;
   player: Player | null;
   onClick: () => void;
-  onRemove: (() => void) | null;
 }
 
-export default function PlayerSlot({ position, player, onClick, onRemove }: Props) {
+export default function PlayerSlot({ position, player, onClick }: Props) {
   const label = POSITION_LABELS[position] ?? position;
   const isMgr = position === 'MGR';
   const filled = player !== null;
@@ -70,29 +58,17 @@ export default function PlayerSlot({ position, player, onClick, onRemove }: Prop
       <div className="mgrslot">
         <motion.button
           className={`mgrcard ${filled ? 'mgrcard--filled' : 'mgrcard--empty'}`}
-          onClick={filled ? undefined : onClick}
-          {...(!filled && { whileHover: { scale: 1.04 }, whileTap: { scale: 0.96 } })}
+          onClick={onClick}
+          whileTap={{ scale: 0.96 }}
+          {...(!filled && { whileHover: { scale: 1.04 } })}
         >
           <div className="mgrcard__photo">
-            {filled ? (
-              <Photo player={player} size={42} />
-            ) : (
-              <Jersey size={36} />
-            )}
+            {filled ? <Photo player={player} size={42} /> : <Jersey size={36} />}
           </div>
           <span className="mgrcard__name">
             {filled ? player.nameHe : 'בחר מאמן'}
           </span>
         </motion.button>
-        {filled && onRemove && (
-          <button
-            className="mgrslot__remove"
-            onClick={(e) => { e.stopPropagation(); onRemove(); }}
-            aria-label="הסר מאמן"
-          >
-            <X size={9} strokeWidth={3} />
-          </button>
-        )}
       </div>
     );
   }
@@ -101,10 +77,10 @@ export default function PlayerSlot({ position, player, onClick, onRemove }: Prop
     <div className="cardslot">
       <motion.button
         className={`card ${filled ? 'card--filled' : 'card--empty'}`}
-        onClick={filled ? undefined : onClick}
+        onClick={onClick}
+        whileTap={{ scale: 0.96 }}
         {...(!filled && {
           whileHover: { y: -6, scale: 1.06, zIndex: 10 },
-          whileTap: { scale: 0.94 },
           transition: { type: 'spring', stiffness: 380, damping: 24 },
         })}
       >
@@ -136,16 +112,6 @@ export default function PlayerSlot({ position, player, onClick, onRemove }: Prop
           )}
         </div>
       </motion.button>
-
-      {filled && onRemove && (
-        <button
-          className="cardslot__remove"
-          onClick={(e) => { e.stopPropagation(); onRemove(); }}
-          aria-label="הסר"
-        >
-          <X size={9} strokeWidth={3} />
-        </button>
-      )}
     </div>
   );
 }

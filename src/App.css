@@ -552,19 +552,6 @@ img    { display: block; max-width: 100%; }
   display: flex; align-items: center; gap: 3px;
 }
 
-/* Remove button */
-.cardslot__remove {
-  position: absolute; top: -5px; left: -5px;
-  width: 20px; height: 20px; border-radius: 50%;
-  background: #d92020; color: var(--white);
-  border: 2px solid rgba(255,255,255,.85);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 20; opacity: 0; transform: scale(.65);
-  transition: opacity .15s, transform .2s;
-}
-@media (hover: hover) {
-  .cardslot:hover .cardslot__remove { opacity: 1; transform: scale(1); }
-}
 
 /* ═══════════════════════════════════════════════
    MANAGER BAR
@@ -617,18 +604,6 @@ img    { display: block; max-width: 100%; }
 .mgrcard--filled .mgrcard__name { color: var(--txt); }
 .mgrcard--empty  .mgrcard__name { color: rgba(255,255,255,.28); font-weight: 500; font-size: .78rem; }
 
-.mgrslot__remove {
-  position: absolute; top: -4px; right: -4px;
-  width: 18px; height: 18px; border-radius: 50%;
-  background: #d92020; color: var(--white);
-  border: 1.5px solid rgba(255,255,255,.75);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 20; opacity: 0; transform: scale(.65);
-  transition: opacity .15s, transform .2s;
-}
-@media (hover: hover) {
-  .mgrslot:hover .mgrslot__remove { opacity: 1; transform: scale(1); }
-}
 
 /* ═══════════════════════════════════════════════
    FOOTER

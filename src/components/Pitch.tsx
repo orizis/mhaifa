@@ -75,10 +75,9 @@ const FieldSVG = () => (
 interface Props {
   lineup: Lineup;
   onSlotClick: (role: Position, index: number) => void;
-  onSlotRemove: (role: Position, index: number) => void;
 }
 
-export default function Pitch({ lineup, onSlotClick, onSlotRemove }: Props) {
+export default function Pitch({ lineup, onSlotClick }: Props) {
   const { GK, DEF, MID, ATT, MGR } = lineup;
 
   return (
@@ -90,47 +89,24 @@ export default function Pitch({ lineup, onSlotClick, onSlotRemove }: Props) {
           <div className="formation">
             <div className="row row--att">
               {ATT.map((p, i) => (
-                <PlayerSlot
-                  key={i}
-                  position="ATT"
-                  player={p}
-                  onClick={() => onSlotClick('ATT', i)}
-                  onRemove={p ? () => onSlotRemove('ATT', i) : null}
-                />
+                <PlayerSlot key={i} position="ATT" player={p} onClick={() => onSlotClick('ATT', i)} />
               ))}
             </div>
 
             <div className="row row--mid">
               {MID.map((p, i) => (
-                <PlayerSlot
-                  key={i}
-                  position="MID"
-                  player={p}
-                  onClick={() => onSlotClick('MID', i)}
-                  onRemove={p ? () => onSlotRemove('MID', i) : null}
-                />
+                <PlayerSlot key={i} position="MID" player={p} onClick={() => onSlotClick('MID', i)} />
               ))}
             </div>
 
             <div className="row row--def">
               {DEF.map((p, i) => (
-                <PlayerSlot
-                  key={i}
-                  position="DEF"
-                  player={p}
-                  onClick={() => onSlotClick('DEF', i)}
-                  onRemove={p ? () => onSlotRemove('DEF', i) : null}
-                />
+                <PlayerSlot key={i} position="DEF" player={p} onClick={() => onSlotClick('DEF', i)} />
               ))}
             </div>
 
             <div className="row row--gk">
-              <PlayerSlot
-                position="GK"
-                player={GK}
-                onClick={() => onSlotClick('GK', 0)}
-                onRemove={GK ? () => onSlotRemove('GK', 0) : null}
-              />
+              <PlayerSlot position="GK" player={GK} onClick={() => onSlotClick('GK', 0)} />
             </div>
           </div>
         </div>
@@ -138,12 +114,7 @@ export default function Pitch({ lineup, onSlotClick, onSlotRemove }: Props) {
 
       <div className="mgr-bar">
         <span className="mgr-bar__title">מאמן</span>
-        <PlayerSlot
-          position="MGR"
-          player={MGR}
-          onClick={() => onSlotClick('MGR', 0)}
-          onRemove={MGR ? () => onSlotRemove('MGR', 0) : null}
-        />
+        <PlayerSlot position="MGR" player={MGR} onClick={() => onSlotClick('MGR', 0)} />
       </div>
     </div>
   );
