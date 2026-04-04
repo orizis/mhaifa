@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { useScreenshot } from 'use-react-screenshot';
+import { Shuffle } from 'lucide-react';
 import Pitch from './components/Pitch';
 import PlayerPicker from './components/PlayerPicker';
 import ExportPreview from './components/ExportPreview';
+import ExportPitch from './components/ExportPitch';
+import { PLAYERS, MANAGERS } from './data/players';
 import type { Lineup, ActivePicker, Player, Position } from './types';
 
 const EMPTY_LINEUP: Lineup = {
@@ -75,8 +78,21 @@ export default function App() {
     if (window.confirm('לאפס את כל הבחירות?')) setLineup(EMPTY_LINEUP);
   };
 
+  const handleRandom = () => {
+    const pick = <T,>(arr: T[], n: number): T[] =>
+      [...arr].sort(() => Math.random() - 0.5).slice(0, n);
+
+    setLineup({
+      GK: pick(PLAYERS.filter(p => p.position === 'GK'), 1)[0] ?? null,
+      DEF: pick(PLAYERS.filter(p => p.position === 'DEF'), 4),
+      MID: pick(PLAYERS.filter(p => p.position === 'MID'), 3),
+      ATT: pick(PLAYERS.filter(p => p.position === 'ATT'), 3),
+      MGR: pick(MANAGERS, 1)[0] ?? null,
+    });
+  };
+
   const handleExport = async () => {
-    const el = document.getElementById('pitch-export');
+    const el = document.getElementById('export-target');
     if (!el) return;
     setExporting(true);
     try {
@@ -85,12 +101,6 @@ export default function App() {
         scale: 2,
         backgroundColor: '#071209',
         logging: false,
-        onclone: (_doc: Document, cloned: HTMLElement) => {
-          cloned.querySelectorAll<HTMLElement>('.card__name').forEach((n) => {
-            n.style.overflow = 'visible';
-            n.style.webkitLineClamp = 'unset';
-          });
-        },
       });
 
       setExportUrl(dataUrl);
@@ -161,6 +171,9 @@ export default function App() {
             <button type="button" className="btn btn--ghost" onClick={handleReset}>
               אפס
             </button>
+            <button type="button" className="btn btn--ghost" onClick={handleRandom}>
+              <Shuffle size={14} strokeWidth={2.5} />
+            </button>
             <button
               type="button"
               className={`btn btn--export ${complete ? 'btn--export-ready' : ''}`}
@@ -182,6 +195,15 @@ export default function App() {
       />
 
       <ExportPreview dataUrl={exportUrl} onClose={() => setExportUrl(null)} />
+
+      {/* Hidden export target — captured by html2canvas on export */}
+      <div
+        id="export-target"
+        style={{ position: 'fixed', top: 0, left: '-9999px', pointerEvents: 'none', width: '390px' }}
+        aria-hidden
+      >
+        <ExportPitch lineup={lineup} />
+      </div>
     </div>
   );
 }

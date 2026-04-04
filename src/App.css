@@ -931,3 +931,105 @@ img    { display: block; max-width: 100%; }
   justify-content: center;
   gap: 8px;
 }
+
+/* ═══════════════════════════════════════════════
+   EXPORT PITCH (circle layout, off-screen)
+═══════════════════════════════════════════════ */
+.exp-wrap {
+  background: #071209;
+  width: 390px;
+  font-family: 'Heebo', Arial, sans-serif;
+  direction: rtl;
+}
+
+.exp-pitch {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 68 / 105;
+}
+
+.exp-field-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.exp-formation {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 12px 8px;
+}
+
+.exp-row {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+/* ── Circle slot ── */
+.exp-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  width: 80px;
+}
+
+.exp-circle {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--mh);
+  background: rgba(255,255,255,0.08);
+  flex-shrink: 0;
+}
+
+.exp-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+.exp-pos {
+  font-size: 7px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.exp-name {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.exp-season {
+  font-size: 7.5px;
+  font-weight: 500;
+  color: var(--mh);
+}
+
+/* ── Manager bar ── */
+.exp-mgr-bar {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 14px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.exp-mgr-bar .exp-circle {
+  width: 46px;
+  height: 46px;
+  border-color: var(--g400);
+}
