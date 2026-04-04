@@ -64,12 +64,19 @@ export default function PlayerPicker({ activePicker, lineup, onSelect, onClose }
     return okSeason && okSearch && okAvailable;
   });
 
+  const allInLineup = [lineup.GK, lineup.MGR, ...lineup.DEF, ...lineup.MID, ...lineup.ATT].filter(
+    (p): p is Player => p !== null,
+  );
+  // Manual entry is allowed only once per team. If a different slot already has a manual
+  // player, the section is hidden. If the *current* slot has a manual player, replacing
+  // it is still allowed (it's the same "one" manual slot).
+  const hasOtherManual = allInLineup.some(
+    (p) => p.id.startsWith('manual-') && p.id !== current?.id,
+  );
+
   const handleManual = () => {
     const name = manualName.trim();
-    if (!name) return;
-    const allInLineup = [lineup.GK, lineup.MGR, ...lineup.DEF, ...lineup.MID, ...lineup.ATT].filter(
-      (p): p is Player => p !== null,
-    );
+    if (!name || hasOtherManual) return;
     const alreadyInLineup = allInLineup.some((p) => p.nameHe === name && p.id !== current?.id);
     if (alreadyInLineup) return;
     onSelect({
@@ -164,7 +171,7 @@ export default function PlayerPicker({ activePicker, lineup, onSelect, onClose }
               )}
             </div>
 
-            {!isMgr && (
+            {!isMgr && !hasOtherManual && (
               <div className="picker__manual">
                 <span className="picker__manual-label">הוסף ידנית:</span>
                 <input
