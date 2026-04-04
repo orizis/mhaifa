@@ -296,13 +296,14 @@ img    { display: block; max-width: 100%; }
   justify-content: space-evenly;
   padding: 8px 3px;
 }
-.row { display: flex; justify-content: center; gap: 6px; }
+.row { display: flex; justify-content: center; gap: 6px; width: 100%; }
 
 /* ═══════════════════════════════════════════════
    PLAYER CARD SLOT (on pitch)
 ═══════════════════════════════════════════════ */
-/* 4 cards + 3×6px gaps + 6px formation h-padding = 24px reserved */
-.cardslot { position: relative; width: min(88px, calc((100cqw - 24px) / 4)); flex-shrink: 0; }
+/* All cards use the same width: (row_width − 3 gaps) / 4.
+   Rows with fewer cards simply center the remaining space. */
+.cardslot { position: relative; flex: 0 0 calc((100% - 18px) / 4); max-width: 88px; }
 
 .card {
   width: 100%; display: flex; flex-direction: column;
@@ -865,4 +866,5 @@ img    { display: block; max-width: 100%; }
   .card__pos { font-size: .48rem; }
   .card__head { min-height: 18px; padding: 3px 5px 2px; }
   .row { gap: 4px; }
+  .cardslot { flex-basis: calc((100% - 12px) / 4); }
 }
