@@ -57,11 +57,15 @@ function ExportSlot({ player }: { player: Player | null; position: Position }) {
     <div className="exp-slot">
       <div className="exp-circle">
         {player?.imageUrl ? (
-          // background-image + background-size:cover is used instead of <img object-fit>
-          // because html2canvas does not support object-fit and stretches <img> elements.
-          <div
+          // <img> renders sharply at the scaled canvas resolution; background-image
+          // is cached at CSS size and then upscaled, causing pixelation.
+          // object-fit is not used (html2canvas ignores it); instead overflow:hidden
+          // on the parent circle clips the auto-sized image.
+          <img
             className="exp-photo"
-            style={{ backgroundImage: `url(${player.imageUrl})` }}
+            src={player.imageUrl}
+            crossOrigin="anonymous"
+            alt=""
           />
         ) : (
           <ExportSilhouette />
