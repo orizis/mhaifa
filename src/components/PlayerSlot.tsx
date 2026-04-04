@@ -1,8 +1,9 @@
-import { motion } from "framer-motion";
-import { Plus, X } from "lucide-react";
-import { POSITION_LABELS } from "../data/players.js";
+import { motion } from 'framer-motion';
+import { Plus, X } from 'lucide-react';
+import type { Player, Position } from '../types';
+import { POSITION_LABELS } from '../data/players';
 
-function Jersey({ size = 42 }) {
+function Jersey({ size = 42 }: { size?: number }) {
   return (
     <img
       className="jersey-thumb"
@@ -16,8 +17,7 @@ function Jersey({ size = 42 }) {
   );
 }
 
-/* ── Silhouette fallback ──────────────────────── */
-const Silhouette = ({ size = 58 }) => (
+const Silhouette = ({ size = 58 }: { size?: number }) => (
   <svg
     width={size}
     height={size}
@@ -30,8 +30,13 @@ const Silhouette = ({ size = 58 }) => (
   </svg>
 );
 
-/* ── Player photo with fallback ──────────────── */
-const Photo = ({ player, size }) => {
+function Photo({ player, size }: { player: Player; size: number }) {
+  const handleImgError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.style.display = 'none';
+    const fallback = e.currentTarget.nextElementSibling as HTMLElement | null;
+    if (fallback) fallback.style.display = 'flex';
+  };
+
   if (!player.imageUrl) return <Silhouette size={size} />;
   return (
     <>
@@ -39,29 +44,32 @@ const Photo = ({ player, size }) => {
         src={player.imageUrl}
         alt={player.nameHe}
         className="card__img"
-        onError={(e) => {
-          e.currentTarget.style.display = "none";
-          e.currentTarget.nextSibling.style.display = "flex";
-        }}
+        onError={handleImgError}
       />
-      <span className="card__sil" style={{ display: "none" }}>
+      <span className="card__sil" style={{ display: 'none' }}>
         <Silhouette size={size} />
       </span>
     </>
   );
-};
+}
 
-/* ── Main component ───────────────────────────── */
-export default function PlayerSlot({ position, player, onClick, onRemove }) {
-  const label = POSITION_LABELS[position] || position;
-  const isMgr = position === "MGR";
-  const filled = !!player;
+interface Props {
+  position: Position;
+  player: Player | null;
+  onClick: () => void;
+  onRemove: (() => void) | null;
+}
+
+export default function PlayerSlot({ position, player, onClick, onRemove }: Props) {
+  const label = POSITION_LABELS[position] ?? position;
+  const isMgr = position === 'MGR';
+  const filled = player !== null;
 
   if (isMgr) {
     return (
       <div className="mgrslot">
         <motion.button
-          className={`mgrcard ${filled ? "mgrcard--filled" : "mgrcard--empty"}`}
+          className={`mgrcard ${filled ? 'mgrcard--filled' : 'mgrcard--empty'}`}
           onClick={onClick}
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.96 }}
@@ -74,16 +82,14 @@ export default function PlayerSlot({ position, player, onClick, onRemove }) {
             )}
           </div>
           <span className="mgrcard__name">
-            {filled ? player.nameHe : "בחר מאמן"}
+            {filled ? player.nameHe : 'בחר מאמן'}
           </span>
         </motion.button>
         {filled && onRemove && (
           <button
             className="mgrslot__remove"
-            onClick={(e) => {
-              e.stopPropagation();
-              onRemove();
-            }}
+            onClick={(e) => { e.stopPropagation(); onRemove(); }}
+            aria-label="הסר מאמן"
           >
             <X size={9} strokeWidth={3} />
           </button>
@@ -95,13 +101,12 @@ export default function PlayerSlot({ position, player, onClick, onRemove }) {
   return (
     <div className="cardslot">
       <motion.button
-        className={`card ${filled ? "card--filled" : "card--empty"}`}
+        className={`card ${filled ? 'card--filled' : 'card--empty'}`}
         onClick={onClick}
         whileHover={{ y: -6, scale: 1.06, zIndex: 10 }}
         whileTap={{ scale: 0.94 }}
-        transition={{ type: "spring", stiffness: 380, damping: 24 }}
+        transition={{ type: 'spring', stiffness: 380, damping: 24 }}
       >
-        {/* Header strip */}
         <div className="card__head">
           <span className="card__pos">{label}</span>
           {filled && player.seasons[0] && (
@@ -109,7 +114,6 @@ export default function PlayerSlot({ position, player, onClick, onRemove }) {
           )}
         </div>
 
-        {/* Photo / Jersey */}
         <div className="card__photo">
           {filled ? (
             <Photo player={player} size={58} />
@@ -120,7 +124,6 @@ export default function PlayerSlot({ position, player, onClick, onRemove }) {
           )}
         </div>
 
-        {/* Name */}
         <div className="card__footer">
           {filled ? (
             <span className="card__name">{player.nameHe}</span>
@@ -136,10 +139,7 @@ export default function PlayerSlot({ position, player, onClick, onRemove }) {
       {filled && onRemove && (
         <button
           className="cardslot__remove"
-          onClick={(e) => {
-            e.stopPropagation();
-            onRemove();
-          }}
+          onClick={(e) => { e.stopPropagation(); onRemove(); }}
           aria-label="הסר"
         >
           <X size={9} strokeWidth={3} />
